@@ -6,17 +6,21 @@ import ru.diasoft.testTask.data.entity.User;
 import ru.diasoft.testTask.data.mapper.UserMapper;
 import ru.diasoft.testTask.data.repository.UserRepository;
 import ru.diasoft.testTask.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
     }
 
@@ -49,8 +53,8 @@ public class UserServiceImpl implements UserService {
     public void createNewUser(UserDto userDto) {
         User user = userMapper.toUser(userDto);
 
-        user.setPassword(userDto.getPassword());
-
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRegistrationDate(LocalDateTime.now());
         userRepository.save(user);
     }
 
@@ -59,7 +63,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(oldEmail);
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
 
