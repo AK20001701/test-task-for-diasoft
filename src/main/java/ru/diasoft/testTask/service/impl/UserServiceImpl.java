@@ -1,6 +1,9 @@
 package ru.diasoft.testTask.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ru.diasoft.testTask.controller.UserController;
 import ru.diasoft.testTask.data.dto.UserDto;
 import ru.diasoft.testTask.data.entity.User;
 import ru.diasoft.testTask.data.mapper.UserMapper;
@@ -17,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -26,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findAll() {
+        logger.info("Find all users");
         return userMapper.toUserDtoList(userRepository.findAll());
     }
 
@@ -54,6 +59,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toUser(userDto);
 
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        logger.info("Encode user password");
         user.setRegistrationDate(LocalDateTime.now());
         userRepository.save(user);
     }
@@ -67,11 +73,13 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
 
+        logger.info("Update user");
         userRepository.save(user);
     }
 
     @Override
     public void deleteUser(String email) {
+        logger.info("Delete user with email: - " + email);
         userRepository.delete(userRepository.findByEmail(email));
     }
 }
