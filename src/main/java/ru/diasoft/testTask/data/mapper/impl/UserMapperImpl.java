@@ -42,7 +42,7 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public List<UserDto> toUserDtoLIst(List<User> userList) {
+    public List<UserDto> toUserDtoList(List<User> userList) {
         return userList.stream().map(this::toUserDto).collect(Collectors.toList());
     }
 

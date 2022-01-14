@@ -17,9 +17,9 @@ public interface UserService {
 
     List<UserDto> findByLastName(String LastName);
 
-    void createNewUser(String email);
+    void createNewUser(UserDto userDto);
 
-    void updateUser(String email);
+    void updateUser(String oldEmail, UserDto userDto);
 
     void deleteUser(String email);
 
