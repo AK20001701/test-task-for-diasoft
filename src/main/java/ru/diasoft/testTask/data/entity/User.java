@@ -1,4 +1,4 @@
-package ru.diasoft.testTask.entity;
+package ru.diasoft.testTask.data.entity;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
