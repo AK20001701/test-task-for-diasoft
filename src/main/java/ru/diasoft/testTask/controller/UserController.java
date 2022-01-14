@@ -28,6 +28,7 @@ public class UserController {
 
     @GetMapping("/all-users")
     public List<UserDto> allUsers() {
+        System.out.println("qweqwe");
         return userService.findAll();
     }
 
