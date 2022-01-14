@@ -1,7 +1,6 @@
 package ru.diasoft.testTask.service;
 
 
-
 import ru.diasoft.testTask.data.dto.UserDto;
 
 import java.util.List;
@@ -23,8 +22,5 @@ public interface UserService {
     void updateUser(String email);
 
     void deleteUser(String email);
-
-
-
 
 }
