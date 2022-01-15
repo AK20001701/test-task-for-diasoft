@@ -57,15 +57,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findByFirstName(String firstName) {
-        return Optional.of(
-                userMapper.toUserDtoList(userRepository.findByFirstName(firstName)))
-                .orElseThrow(() -> new UserNotFoundException("first name: " + firstName));
+        return userMapper.toUserDtoList(userRepository.findByFirstName(firstName)
+                                .orElseThrow(() -> new UserNotFoundException("first name: " + firstName)));
     }
 
     @Override
     public List<UserDto> findByLastName(String lastName) {
-        return Optional.of(userMapper.toUserDtoList(userRepository.findByLastName(lastName)))
-                .orElseThrow(() -> new UserNotFoundException("last name: " + lastName));
+        return userMapper.toUserDtoList(userRepository.findByLastName(lastName)
+                        .orElseThrow(() -> new UserNotFoundException("last name: " + lastName)));
     }
 
     @Override
@@ -102,10 +101,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkDuplicate(UserDto userDto) {
-        if (!userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new AlreadyTakenException("email (" + userDto.getEmail() + ")");
         }
-        if (!userRepository.findByPhoneNumber(userDto.getPhoneNumber()).isPresent()) {
+        if (userRepository.findByPhoneNumber(userDto.getPhoneNumber()).isPresent()) {
             throw new AlreadyTakenException("phone number (" + userDto.getPhoneNumber() + ")");
         }
     }
